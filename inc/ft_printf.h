@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:33 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/02 17:19:16 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/02 19:45:45 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,15 @@
 # include "libft.h"
 # include <stdarg.h>
 
-int		ft_printf(const char *s, ...);
-void	handle_args(char *flag, va_list *ap, char c);
-char	is_flag(char c);
+typedef struct	s_flags
+{
+	int		len;
+	int		pad;
+	char	c;
+}				t_flags;
+
+int				ft_printf(const char *s, ...);
+int				handle_args(va_list *ap, const char **s);
+char			is_flag(char c);
 
 #endif
