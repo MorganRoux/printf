@@ -77,4 +77,5 @@ fclean:			clean
 
 re:			fclean bonus
 			
-
+test:		all
+			./test.sh

@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:16 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/02 16:34:38 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/02 17:19:59 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int		ft_printf(const char *s, ...)
 {
-	int ret;
-	char flag;
+	int		ret;
+	char	flag;
+	va_list	ap;
 
+	va_start(ap, s);
 	ret = 0;
 	flag = 0;
 	if (s == 0)
@@ -24,7 +26,7 @@ int		ft_printf(const char *s, ...)
 	while (*s != 0)
 	{
 		if (flag != 0 )
-			handle_args(&flag);
+			handle_args(&flag, &ap, *s);
 		else if ((flag = is_flag(*s)) == 0)
 			ft_putchar_fd(*s, 1);
 		s++;

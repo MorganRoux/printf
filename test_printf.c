@@ -2,6 +2,6 @@
 
 int main(void)
 {
-	ft_printf("yo");
+	ft_printf("yo%%yoy");
 	return (0);
 }
