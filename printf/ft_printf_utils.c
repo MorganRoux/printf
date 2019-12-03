@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:10:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/03 10:30:56 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/03 10:42:56 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,26 +66,31 @@ void	option_diuxX(va_list *ap, t_flags *flags, char type)
 		return ;
 	len = flags->precision - ft_strlen(nbr);
 	len = len < 0 ? 0 : len;
-	zero = ft_calloc(len + 1, sizeof(char));
+	if (!(zero = ft_calloc(len + 1, sizeof(char))))
+		return ;
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
 	s = ft_strjoin(zero, nbr);
-//	ft_putstr_fd(nbr, 1);
-
 	print_arg(s, flags);
 	free(nbr);
 	free(s);
 	free(zero);
 }
-/*
+
 void	option_c(va_list *ap, t_flags *flags)
 {
 	unsigned char	i;
-	
-	i = va_arg(*ap, int);
-	ft_putchar_fd(i, 1);
-}
+	char			*s;
 
+	if (!(s = malloc(2)))
+		return ;
+	i = va_arg(*ap, int);
+	s[0] = (unsigned char)i;
+	s[1] = 0;
+	print_arg(s, flags);
+	free(s);
+}
+/*
 void	option_s(va_list *ap, t_flags *flags)
 {
 	char	*s;
@@ -160,9 +165,9 @@ int		handle_args(va_list *ap, const char **s)
 			handle_precision(ap, s, &flags);
 			if (**s == 'd' || **s == 'i' || **s == 'u' || **s == 'x' || **s == 'X')
 				option_diuxX(ap, &flags, **s);	
-		/*	else if (c == 'c')
-				option_c(ap, flags);	
-			else if (c == 's')
+			else if (**s == 'c')
+				option_c(ap, &flags);	
+		/*	else if (c == 's')
 				option_s(ap, flags);*/
 			(*s)++;
 		}

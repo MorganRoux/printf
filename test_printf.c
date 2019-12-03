@@ -17,9 +17,7 @@ int main(void)
 	ft_printf("%-*.*d-\n", j, k, i);
 	ft_printf("%20X-\n", l);
 	ft_printf("%-20.15d\n", l);
-
-
-
+	ft_printf("%20.10c", c);
 
 	return (0);
 }
