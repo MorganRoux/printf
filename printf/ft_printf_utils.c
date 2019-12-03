@@ -35,19 +35,38 @@ void	print_arg_right(char *s, int len, char c)
 	ft_putstr_fd(s, 1);
 }
 
-void	option_di(va_list *ap, t_flags *flags)
+void	print_arg(char *s, t_flags *flags)
 {
-	int		i;
 	char	c;
 
-	i = va_arg(*ap, int);
 	if (flags->pad == LEFT_ADJUSTED)
-		print_arg_left(ft_itoa(i), flags->len);
+		print_arg_left(s, flags->len);
 	else
 	{
 		c = (flags->pad == ZERO_PADDING) ? '0' : ' ';
-		print_arg_right(ft_itoa(i), flags->len, c);
+		print_arg_right(s, flags->len, c);
 	}
+
+}
+
+void	option_di(va_list *ap, t_flags *flags)
+{
+	int		len;
+	char	*s;
+	char	*zero;
+	char	*nbr;
+
+	nbr = ft_itoa(va_arg(*ap, int));
+	len = flags->precision - ft_strlen(nbr);
+	len = len < 0 ? 0 : len;
+	zero = ft_calloc(len + 1, sizeof(char));
+	ft_memset(zero, '0', len);
+	zero[len] = 0;
+	s = ft_strjoin(zero, nbr);
+	print_arg(s, flags);
+	free(nbr);
+	free(s);
+	free(zero);
 }
 /*
 void	option_c(va_list *ap, t_flags *flags)
@@ -89,6 +108,20 @@ void	handle_digits(const char **s, t_flags *flags)
 	}
 }
 
+void	handle_precision(const char **s, t_flags *flags)
+{
+	flags->precision = 0;
+	if (**s == '.')
+	{
+		(*s)++;
+		if (ft_isdigit(**s))
+		{
+			flags->precision = ft_atoi(*s);
+			while (ft_isdigit(**s))
+				(*s)++;
+		}
+	}
+}
 
 int		handle_args(va_list *ap, const char **s)
 {
@@ -105,6 +138,7 @@ int		handle_args(va_list *ap, const char **s)
 		{
 			handle_flags(s, &flags);
 			handle_digits(s, &flags);
+			handle_precision(s, &flags);
 			if (**s == 'd' || **s == 'i')
 				option_di(ap, &flags);	
 		/*	else if (c == 'c')

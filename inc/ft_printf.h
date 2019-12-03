@@ -17,12 +17,14 @@
 # define RIGHT_ADJUSTED 0
 # define LEFT_ADJUSTED 1
 # define ZERO_PADDING 2
+# define PRECISION 3
 
 typedef struct	s_flags
 {
 	int		len;
 	int		pad;
 	char	c;
+	int		precision;
 }				t_flags;
 
 int				ft_printf(const char *s, ...);
