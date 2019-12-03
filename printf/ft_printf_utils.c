@@ -98,7 +98,7 @@ void	handle_flags(const char **s, t_flags *flags)
 	}
 }
 
-void	handle_digits(const char **s, t_flags *flags)
+void	handle_digits(va_list *ap, const char **s, t_flags *flags)
 {
 	if (ft_isdigit(**s))
 	{
@@ -106,9 +106,14 @@ void	handle_digits(const char **s, t_flags *flags)
 		while (ft_isdigit(**s))
 			(*s)++;
 	}
+	else if (**s == '*')
+	{
+		flags->len = va_arg(*ap, int);
+		(*s)++;
+	}
 }
 
-void	handle_precision(const char **s, t_flags *flags)
+void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 {
 	flags->precision = 0;
 	if (**s == '.')
@@ -119,6 +124,11 @@ void	handle_precision(const char **s, t_flags *flags)
 			flags->precision = ft_atoi(*s);
 			while (ft_isdigit(**s))
 				(*s)++;
+		}
+		else if (**s == '*')
+		{
+			flags->precision = va_arg(*ap, int);
+			(*s)++;
 		}
 	}
 }
@@ -137,8 +147,8 @@ int		handle_args(va_list *ap, const char **s)
 		else 
 		{
 			handle_flags(s, &flags);
-			handle_digits(s, &flags);
-			handle_precision(s, &flags);
+			handle_digits(ap, s, &flags);
+			handle_precision(ap, s, &flags);
 			if (**s == 'd' || **s == 'i')
 				option_di(ap, &flags);	
 		/*	else if (c == 'c')
