@@ -17,7 +17,8 @@ int main(void)
 	ft_printf("%-*.*d-\n", j, k, i);
 	ft_printf("%20X-\n", l);
 	ft_printf("%-20.15d\n", l);
-	ft_printf("%20.10c", c);
+	ft_printf("%20.10c\n", c);
+	ft_printf("%.10s-", "MorganRoux");
 
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:10:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/03 10:42:56 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/03 15:47:50 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,12 @@ void	option_c(va_list *ap, t_flags *flags)
 	print_arg(s, flags);
 	free(s);
 }
-/*
+
 void	option_s(va_list *ap, t_flags *flags)
 {
-	char	*s;
-	
-	s = va_arg(*ap, char *);
-	ft_putstr_fd(s, 1);
+	print_arg(ft_substr(va_arg(*ap, char *), 0, flags->precision), flags);
 }
 
-*/
 void	handle_flags(const char **s, t_flags *flags)
 {
 	while (**s == '-' || **s == '0')
@@ -149,7 +145,6 @@ void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 
 int		handle_args(va_list *ap, const char **s)
 {
-	(void)ap;
 	t_flags	flags;
 	flags.pad = 0;
 	flags.len = 0;
@@ -167,8 +162,8 @@ int		handle_args(va_list *ap, const char **s)
 				option_diuxX(ap, &flags, **s);	
 			else if (**s == 'c')
 				option_c(ap, &flags);	
-		/*	else if (c == 's')
-				option_s(ap, flags);*/
+			else if (**s == 's')
+				option_s(ap, &flags);
 			(*s)++;
 		}
 		return (1);
