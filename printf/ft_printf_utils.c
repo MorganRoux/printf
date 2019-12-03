@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:10:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/02 19:46:29 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/03 10:30:56 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,29 @@ void	print_arg(char *s, t_flags *flags)
 
 }
 
-void	option_di(va_list *ap, t_flags *flags)
+void	option_diuxX(va_list *ap, t_flags *flags, char type)
 {
 	int		len;
 	char	*s;
 	char	*zero;
 	char	*nbr;
 
-	nbr = ft_itoa(va_arg(*ap, int));
+	if (type == 'd' || type == 'i')
+		nbr = ft_itoa(va_arg(*ap, int));
+	else if (type == 'x' || type == 'X')
+		nbr = ft_uitoa_base(va_arg(*ap, int), type == 'x' ? "0123456789abcdef" : "0123456789ABCDEF");
+	else if (type == 'u')
+		nbr = ft_uitoa_base(va_arg(*ap, int), "0123456789");
+	else
+		return ;
 	len = flags->precision - ft_strlen(nbr);
 	len = len < 0 ? 0 : len;
 	zero = ft_calloc(len + 1, sizeof(char));
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
 	s = ft_strjoin(zero, nbr);
+//	ft_putstr_fd(nbr, 1);
+
 	print_arg(s, flags);
 	free(nbr);
 	free(s);
@@ -138,7 +147,7 @@ int		handle_args(va_list *ap, const char **s)
 	(void)ap;
 	t_flags	flags;
 	flags.pad = 0;
-	flags.len = 6;
+	flags.len = 0;
 	if (**s == '%')
 	{
 		(*s)++;
@@ -149,8 +158,8 @@ int		handle_args(va_list *ap, const char **s)
 			handle_flags(s, &flags);
 			handle_digits(ap, s, &flags);
 			handle_precision(ap, s, &flags);
-			if (**s == 'd' || **s == 'i')
-				option_di(ap, &flags);	
+			if (**s == 'd' || **s == 'i' || **s == 'u' || **s == 'x' || **s == 'X')
+				option_diuxX(ap, &flags, **s);	
 		/*	else if (c == 'c')
 				option_c(ap, flags);	
 			else if (c == 's')
