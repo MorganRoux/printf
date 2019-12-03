@@ -14,6 +14,9 @@
 # define FT_PRINTF_H
 # include "libft.h"
 # include <stdarg.h>
+# define RIGHT_ADJUSTED 0
+# define LEFT_ADJUSTED 1
+# define ZERO_PADDING 2
 
 typedef struct	s_flags
 {

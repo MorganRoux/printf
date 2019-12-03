@@ -38,12 +38,16 @@ void	print_arg_right(char *s, int len, char c)
 void	option_di(va_list *ap, t_flags *flags)
 {
 	int		i;
-	
+	char	c;
+
 	i = va_arg(*ap, int);
-	if (flags->pad == 0)
+	if (flags->pad == LEFT_ADJUSTED)
 		print_arg_left(ft_itoa(i), flags->len);
-	else 
-		print_arg_right(ft_itoa(i), flags->len, ' ' );
+	else
+	{
+		c = (flags->pad == ZERO_PADDING) ? '0' : ' ';
+		print_arg_right(ft_itoa(i), flags->len, c);
+	}
 }
 /*
 void	option_c(va_list *ap, t_flags *flags)
@@ -65,17 +69,26 @@ void	option_s(va_list *ap, t_flags *flags)
 */
 void	handle_flags(const char **s, t_flags *flags)
 {
-	while (**s == '-' || **s == '0' || **s == '.' || **s == '*' || ft_isdigit(**s))
+	while (**s == '-' || **s == '0')
 	{
-		if (ft_isdigit(**s))
-		{
-			flags->len = ft_atoi(*s);
-			while (ft_isdigit(**s))
-				(*s)++;
-		}
-	
+		if (**s == '-')
+			flags->pad = LEFT_ADJUSTED;
+		else if (**s == '0' && flags->pad != LEFT_ADJUSTED)
+			flags->pad = ZERO_PADDING;
+		(*s)++;
 	}
 }
+
+void	handle_digits(const char **s, t_flags *flags)
+{
+	if (ft_isdigit(**s))
+	{
+		flags->len = ft_atoi(*s);
+		while (ft_isdigit(**s))
+			(*s)++;
+	}
+}
+
 
 int		handle_args(va_list *ap, const char **s)
 {
@@ -91,6 +104,7 @@ int		handle_args(va_list *ap, const char **s)
 		else 
 		{
 			handle_flags(s, &flags);
+			handle_digits(s, &flags);
 			if (**s == 'd' || **s == 'i')
 				option_di(ap, &flags);	
 		/*	else if (c == 'c')
