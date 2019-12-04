@@ -38,7 +38,7 @@ void	print_arg_right(char *s, int len, char c)
 void	print_arg(char *s, t_flags *flags)
 {
 	char	c;
-
+	
 	if (flags->pad == LEFT_ADJUSTED)
 		print_arg_left(s, flags->len);
 	else
@@ -46,10 +46,10 @@ void	print_arg(char *s, t_flags *flags)
 		c = (flags->pad == ZERO_PADDING) ? '0' : ' ';
 		print_arg_right(s, flags->len, c);
 	}
-
+	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
 }
 
-void	option_diuxX(va_list *ap, t_flags *flags, char type)
+int	option_diuxX(va_list *ap, t_flags *flags, char type)
 {
 	int		len;
 	char	*s;
@@ -65,20 +65,24 @@ void	option_diuxX(va_list *ap, t_flags *flags, char type)
 	else if (type == 'u')
 		nbr = ft_uitoa_base(n, "0123456789");
 	else
-		return ;
+		return (0);
 	len = flags->precision - ft_strlen(nbr);
 	len = len < 0 ? 0 : len;
 	if (!(zero = ft_calloc(len + 1, sizeof(char))))
-		return ;
+		return (-1);
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
 	if (n < 0 && (type == 'd' || type == 'i'))
+	{
 		ft_putchar_fd('-', 1);
+		flags->nprint++;
+	}
 	s = (n < 0 && (type == 'd' || type == 'i')) ? ft_strjoin(zero, &nbr[1]) : ft_strjoin(zero, nbr);
 	print_arg(s, flags);
 	free(nbr);
 	free(s);
 	free(zero);
+	return (0);
 }
 
 void	option_c(va_list *ap, t_flags *flags)
@@ -158,7 +162,6 @@ void	handle_digits(va_list *ap, const char **s, t_flags *flags)
 
 void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 {
-	flags->precision = 0;
 	if (**s == '.')
 	{
 		(*s)++;
@@ -176,26 +179,39 @@ void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 	}
 }
 
+int		handle_type(va_list *ap, const char **s, t_flags *flags)
+{
+	if (**s == 'd' || **s == 'i' || **s == 'u' || **s == 'x' || **s == 'X')
+	{
+		if (option_diuxX(ap, flags, **s) == -1)
+			return (-1);
+	}
+	else if (**s == 'c')
+		option_c(ap, flags);	
+	else if (**s == 's')
+		option_s(ap, flags);
+	else if (**s == 'p')
+		option_p(ap, flags);
+	return (0);
+}
+
 int		handle_args(va_list *ap, const char **s, t_flags *flags)
 {
 	if (**s == '%')
 	{
 		(*s)++;
 		if (**s == '%')
+		{
 			ft_putchar_fd(*(*s)++, 1);
+			flags->nprint++;
+		}
 		else 
 		{
 			handle_flags(s, flags);
 			handle_digits(ap, s, flags);
 			handle_precision(ap, s, flags);
-			if (**s == 'd' || **s == 'i' || **s == 'u' || **s == 'x' || **s == 'X')
-				option_diuxX(ap, flags, **s);	
-			else if (**s == 'c')
-				option_c(ap, flags);	
-			else if (**s == 's')
-				option_s(ap, flags);
-			else if (**s == 'p')
-				option_p(ap, flags);
+			if (handle_type(ap, s, flags) == -1)
+				return (-1);
 			(*s)++;
 		}
 		return (1);

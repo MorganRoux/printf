@@ -20,15 +20,21 @@ int		ft_printf(const char *s, ...)
 
 	flags.pad = 0;
 	flags.len = 0;
+	flags.precision = 0;
+	flags.nprint = 0;
 	va_start(ap, s);
 	ret = 0;
 	if (s == 0)
 		return (-1);
 	while (*s != 0)
 	{
-		if (handle_args(&ap, &s, &flags) == 0)
+		if ((ret = handle_args(&ap, &s, &flags)) == 0)
+		{
 			ft_putchar_fd(*s++, 1);
+			flags.nprint++;
+		}
+		if (ret == -1)
+			return (-1);
 	}
-
-	return ++ret;
+	return (flags.nprint);
 }
