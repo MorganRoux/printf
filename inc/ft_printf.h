@@ -28,7 +28,7 @@ typedef struct	s_flags
 }				t_flags;
 
 int				ft_printf(const char *s, ...);
-int				handle_args(va_list *ap, const char **s);
+int				handle_args(va_list *ap, const char **s, t_flags *flags);
 char			is_flag(char c);
 
 #endif

@@ -55,13 +55,15 @@ void	option_diuxX(va_list *ap, t_flags *flags, char type)
 	char	*s;
 	char	*zero;
 	char	*nbr;
+	int	n;
 
+	n = va_arg(*ap, int);
 	if (type == 'd' || type == 'i')
-		nbr = ft_itoa(va_arg(*ap, int));
+		nbr = ft_itoa(n);
 	else if (type == 'x' || type == 'X')
-		nbr = ft_uitoa_base(va_arg(*ap, int), type == 'x' ? "0123456789abcdef" : "0123456789ABCDEF");
+		nbr = ft_uitoa_base(n, type == 'x' ? "0123456789abcdef" : "0123456789ABCDEF");
 	else if (type == 'u')
-		nbr = ft_uitoa_base(va_arg(*ap, int), "0123456789");
+		nbr = ft_uitoa_base(n, "0123456789");
 	else
 		return ;
 	len = flags->precision - ft_strlen(nbr);
@@ -70,7 +72,9 @@ void	option_diuxX(va_list *ap, t_flags *flags, char type)
 		return ;
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
-	s = ft_strjoin(zero, nbr);
+	if (n < 0 && (type == 'd' || type == 'i'))
+		ft_putchar_fd('-', 1);
+	s = (n < 0 && (type == 'd' || type == 'i')) ? ft_strjoin(zero, &nbr[1]) : ft_strjoin(zero, nbr);
 	print_arg(s, flags);
 	free(nbr);
 	free(s);
@@ -94,6 +98,35 @@ void	option_c(va_list *ap, t_flags *flags)
 void	option_s(va_list *ap, t_flags *flags)
 {
 	print_arg(ft_substr(va_arg(*ap, char *), 0, flags->precision), flags);
+}
+
+void	option_p(va_list *ap, t_flags *flags)
+{	
+	long		len;
+	char	*s;
+	char	*zero;
+	char	*nbr;
+	void	*p;
+
+	long	l;
+	l = (long) ap;
+	
+
+	p = va_arg(*ap, void *);
+	nbr = ft_ultoa_base((unsigned long) p, "0123456789abcdef");
+	len = flags->precision - ft_strlen(nbr);
+	len = len < 0 ? 0 : len;
+	if (!(zero = ft_calloc(len + 1, sizeof(char))))
+		return ;
+	ft_memset(zero, '0', len);
+	zero[len] = 0;
+	s = ft_strjoin(zero, nbr);
+	ft_putstr_fd("0x", 1);
+	print_arg(s, flags);
+	free(nbr);
+	free(s);
+	free(zero);
+
 }
 
 void	handle_flags(const char **s, t_flags *flags)
@@ -143,11 +176,8 @@ void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 	}
 }
 
-int		handle_args(va_list *ap, const char **s)
+int		handle_args(va_list *ap, const char **s, t_flags *flags)
 {
-	t_flags	flags;
-	flags.pad = 0;
-	flags.len = 0;
 	if (**s == '%')
 	{
 		(*s)++;
@@ -155,15 +185,17 @@ int		handle_args(va_list *ap, const char **s)
 			ft_putchar_fd(*(*s)++, 1);
 		else 
 		{
-			handle_flags(s, &flags);
-			handle_digits(ap, s, &flags);
-			handle_precision(ap, s, &flags);
+			handle_flags(s, flags);
+			handle_digits(ap, s, flags);
+			handle_precision(ap, s, flags);
 			if (**s == 'd' || **s == 'i' || **s == 'u' || **s == 'x' || **s == 'X')
-				option_diuxX(ap, &flags, **s);	
+				option_diuxX(ap, flags, **s);	
 			else if (**s == 'c')
-				option_c(ap, &flags);	
+				option_c(ap, flags);	
 			else if (**s == 's')
-				option_s(ap, &flags);
+				option_s(ap, flags);
+			else if (**s == 'p')
+				option_p(ap, flags);
 			(*s)++;
 		}
 		return (1);

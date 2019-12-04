@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uitoa_base.c                                    :+:      :+:    :+:   */
+/*   ft_ltoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,16 @@
 
 #include "libft.h"
 
-char	*ft_uitoa_base(unsigned int n, char *base)
+char	*ft_ultoa_base(unsigned long n, char *base)
 {
 	size_t			len;
-	unsigned int	nbr;
+	unsigned long	nbr;
 	char			*ret;
-	int				nbase;
+	long				nbase;
 
 	if (base == 0)
 		return (NULL);
-	nbase = ft_strlen(base);
+	nbase = (long) ft_strlen(base);
 	nbr = n;
 	len = 1;
 	while ((nbr = nbr / nbase) > 0)

@@ -30,6 +30,7 @@ SRCS		=	libft/ft_memset.c \
 			libft/ft_split.c \
 			libft/ft_itoa.c \
 			libft/ft_uitoa_base.c \
+			libft/ft_ultoa_base.c \
 			libft/ft_strmapi.c \
 			libft/ft_putchar_fd.c \
 			libft/ft_putstr_fd.c \
