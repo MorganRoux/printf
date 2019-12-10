@@ -6,11 +6,12 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:16 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 16:37:46 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 16:52:55 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
 void	init_flags(t_flags *flags)
 {
 	flags->left_pad = 0;

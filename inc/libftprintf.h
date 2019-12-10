@@ -6,12 +6,12 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:40:16 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 16:41:51 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 16:51:10 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
 
 # include <unistd.h>
 # include <stdlib.h>

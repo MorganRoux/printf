@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:33 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 16:41:24 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 18:37:14 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ typedef struct	s_flags
 	int		nprint;
 }				t_flags;
 
+void			print_arg(char *s, t_flags *flags);
+void			print_arg_nbr_right(char *s, t_flags *flags);
+void			print_arg_nbr(char *s, t_flags *flags);
+void			print_arg_c(char c, t_flags *flags);
+int				option_di(t_flags *flags, int n);
+int				option_ux(char *nbr, int n, t_flags *flags);
+int				option_diux(va_list *ap, t_flags *flags, char type);
+void			option_c(va_list *ap, t_flags *flags);
+void			option_pourcent(t_flags *flags);
+void			option_s(va_list *ap, t_flags *flags);
+void			option_p(va_list *ap, t_flags *flags);
 int				ft_printf(const char *s, ...);
 int				handle_args(va_list *ap, const char **s, t_flags *flags);
 char			is_flag(char c);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ltoa_base.c                                    :+:      :+:    :+:   */
+/*   ft_ultoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/03 10:17:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/03 10:25:13 by mroux            ###   ########.fr       */
+/*   Created: 2019/12/10 16:51:59 by mroux             #+#    #+#             */
+/*   Updated: 2019/12/10 16:52:22 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ char	*ft_ultoa_base(unsigned long n, char *base)
 	size_t			len;
 	unsigned long	nbr;
 	char			*ret;
-	long				nbase;
+	long			nbase;
 
 	if (base == 0)
 		return (NULL);
-	nbase = (long) ft_strlen(base);
+	nbase = (long)ft_strlen(base);
 	nbr = n;
 	len = 1;
 	while ((nbr = nbr / nbase) > 0)

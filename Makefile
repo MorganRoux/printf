@@ -38,7 +38,10 @@ SRCS		=	libft/ft_memset.c \
 			libft/ft_putnbr_fd.c \
 			libft/ft_calloc.c \
 			src/ft_printf.c \
-			src/ft_printf_utils.c
+			src/ft_printf_utils.c \
+			src/ft_printf_options_others.c \
+			src/ft_printf_options_diux.c \
+			src/ft_printf_prints.c
 
 SRCS_BONUS	=	libft/ft_lstnew_bonus.c \
 			libft/ft_lstadd_front_bonus.c \
