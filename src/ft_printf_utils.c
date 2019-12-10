@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:10:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 18:31:31 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 19:28:24 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	handle_flags(const char **s, t_flags *flags)
 	while (**s == '-' || **s == '0')
 	{
 		if (**s == '-')
-			flags->left_pad = (flags->left_pad == 0) ? 1 : 0;
+			flags->left_pad = 1;
 		else if (**s == '0')
 			flags->zero_pad = 1;
 		(*s)++;
@@ -59,6 +59,7 @@ void	handle_precision(va_list *ap, const char **s, t_flags *flags)
 		else if (**s == '*')
 		{
 			flags->precision = va_arg(*ap, int);
+			flags->precision = (flags->precision < 0) ? -1 : flags->precision;
 			(*s)++;
 		}
 	}
