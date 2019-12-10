@@ -80,4 +80,4 @@ fclean:			clean
 re:			fclean bonus
 			
 test:		all
-			./test.sh
+			./test.sh | cat -e

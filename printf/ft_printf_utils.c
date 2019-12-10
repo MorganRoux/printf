@@ -12,41 +12,88 @@
 
 #include "ft_printf.h"
 
-void	print_arg_left(char *s, int len)
-{
-	int i;
-
-	i = 0;
-	while (s[i] != 0)
-		ft_putchar_fd(s[i++], 1);
-	while (i++ < len)
-		ft_putchar_fd(' ', 1);
-}
-
-void	print_arg_right(char *s, int len, char c)
-{
-	int	i;
-	int l;
-
-	l = len - ft_strlen(s);
-	i = 0;
-	while (i++ < l)
-		ft_putchar_fd(c, 1);
-	ft_putstr_fd(s, 1);
-}
-
 void	print_arg(char *s, t_flags *flags)
 {
 	char	c;
+	int		i;
+	int		l;
 	
-	if (flags->pad == LEFT_ADJUSTED)
-		print_arg_left(s, flags->len);
+	if (flags->left_pad)
+	{
+		i = 0;
+		while (s[i] != 0)
+			ft_putchar_fd(s[i++], 1);
+		while (i++ < flags->len)
+			ft_putchar_fd(' ', 1);
+	}
 	else
 	{
-		c = (flags->pad == ZERO_PADDING) ? '0' : ' ';
-		print_arg_right(s, flags->len, c);
+		c = (flags->zero_pad  && flags->precision == -1) ? '0' : ' ';
+		l = flags->len - ft_strlen(s);
+		i = 0;
+		while (i++ < l)
+			ft_putchar_fd(c, 1);
+		ft_putstr_fd(s, 1);
 	}
-	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
+}
+
+void	print_arg_nbr(char *s, t_flags *flags)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	if (flags->left_pad)
+	{
+		while (s[i] != 0)
+			ft_putchar_fd(s[i++], 1);
+		while (i++ < flags->len)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		if ((flags->zero_pad  && flags->precision == -1))
+		{
+			c = '0';
+			if (s != 0 && s[0] == '-')
+			{
+				ft_putchar_fd('-', 1);
+				s++;
+				i++;
+			}
+		}
+		else
+			c = ' ';
+
+		while (i++ < flags->len - (int) ft_strlen(s))
+			ft_putchar_fd(c, 1);
+		ft_putstr_fd(s, 1);
+	}
+}
+
+
+void	print_arg_c(char c, t_flags *flags)
+{
+	char	fill;
+	int		i;
+	int		l;
+	
+	if (flags->left_pad)
+	{
+		i = 1;
+		ft_putchar_fd(c, 1);
+		while (i++ < flags->len)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		fill = (flags->zero_pad  && flags->precision == -1) ? '0' : ' ';
+		l = flags->len - 1;
+		i = 0;
+		while (i++ < l)
+			ft_putchar_fd(fill, 1);
+		ft_putchar_fd(c, 1);
+	}
 }
 
 int	option_diuxX(va_list *ap, t_flags *flags, char type)
@@ -72,13 +119,9 @@ int	option_diuxX(va_list *ap, t_flags *flags, char type)
 		return (-1);
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
-	if (n < 0 && (type == 'd' || type == 'i'))
-	{
-		ft_putchar_fd('-', 1);
-		flags->nprint++;
-	}
-	s = (n < 0 && (type == 'd' || type == 'i')) ? ft_strjoin(zero, &nbr[1]) : ft_strjoin(zero, nbr);
-	print_arg(s, flags);
+	s = (n < 0 && (type == 'd' || type == 'i')) ? ft_strjoin("-", ft_strjoin(zero, &nbr[1])) : ft_strjoin(zero, nbr);
+	print_arg_nbr(s, flags);
+	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
 	free(nbr);
 	free(s);
 	free(zero);
@@ -88,20 +131,22 @@ int	option_diuxX(va_list *ap, t_flags *flags, char type)
 void	option_c(va_list *ap, t_flags *flags)
 {
 	unsigned char	i;
-	char			*s;
-
-	if (!(s = malloc(2)))
-		return ;
+	
 	i = va_arg(*ap, int);
-	s[0] = (unsigned char)i;
-	s[1] = 0;
-	print_arg(s, flags);
-	free(s);
+	print_arg_c(i, flags);
+	flags->nprint += (1 > (unsigned long) flags->len) ? 1 : flags->len;
 }
 
 void	option_s(va_list *ap, t_flags *flags)
 {
-	print_arg(ft_substr(va_arg(*ap, char *), 0, flags->precision), flags);
+	char	*s;
+
+	if ((s = va_arg(*ap, char *)) == 0)
+		s = ft_strdup("(null)");
+	s = ft_substr(s, 0, flags->precision);
+	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
+	print_arg(s, flags);
+	free(s);
 }
 
 void	option_p(va_list *ap, t_flags *flags)
@@ -127,6 +172,7 @@ void	option_p(va_list *ap, t_flags *flags)
 	s = ft_strjoin(zero, nbr);
 	ft_putstr_fd("0x", 1);
 	print_arg(s, flags);
+	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
 	free(nbr);
 	free(s);
 	free(zero);
@@ -138,9 +184,9 @@ void	handle_flags(const char **s, t_flags *flags)
 	while (**s == '-' || **s == '0')
 	{
 		if (**s == '-')
-			flags->pad = LEFT_ADJUSTED;
-		else if (**s == '0' && flags->pad != LEFT_ADJUSTED)
-			flags->pad = ZERO_PADDING;
+			flags->left_pad = !flags->left_pad;
+		else if (**s == '0')
+			flags->zero_pad = 1;
 		(*s)++;
 	}
 }
@@ -158,6 +204,13 @@ void	handle_digits(va_list *ap, const char **s, t_flags *flags)
 		flags->len = va_arg(*ap, int);
 		(*s)++;
 	}
+	if (flags->len < 0)
+	{
+		flags->len = -flags->len;
+		flags->left_pad = !flags->left_pad;
+	}
+	
+	
 }
 
 void	handle_precision(va_list *ap, const char **s, t_flags *flags)

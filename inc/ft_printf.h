@@ -22,7 +22,8 @@
 typedef struct	s_flags
 {
 	int		len;
-	int		pad;
+	int		left_pad;
+	int		zero_pad;
 	char	c;
 	int		precision;
 	int		nprint;

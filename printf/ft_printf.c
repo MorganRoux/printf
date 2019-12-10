@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+void	init_flags(t_flags *flags)
+{
+	flags->left_pad = 0;
+	flags->zero_pad = 0;
+	flags->len = 0;
+	flags->precision = -1;
+}
 
 int		ft_printf(const char *s, ...)
 {
@@ -18,9 +25,6 @@ int		ft_printf(const char *s, ...)
 	va_list	ap;
 	t_flags	flags;
 
-	flags.pad = 0;
-	flags.len = 0;
-	flags.precision = 0;
 	flags.nprint = 0;
 	va_start(ap, s);
 	ret = 0;
@@ -28,6 +32,7 @@ int		ft_printf(const char *s, ...)
 		return (-1);
 	while (*s != 0)
 	{
+		init_flags(&flags);
 		if ((ret = handle_args(&ap, &s, &flags)) == 0)
 		{
 			ft_putchar_fd(*s++, 1);
