@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 18:28:56 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 18:31:16 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 19:10:36 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_arg_nbr_right(char *s, t_flags *flags)
 	int		i;
 
 	i = 0;
-	if ((flags->zero_pad && flags->precision == -1))
+	if (flags->zero_pad && flags->precision == -1)
 	{
 		c = '0';
 		if (s != 0 && s[0] == '-')
