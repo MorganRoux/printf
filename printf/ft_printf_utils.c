@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:10:46 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/03 15:47:50 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 11:22:29 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	option_p(va_list *ap, t_flags *flags)
 	
 
 	p = va_arg(*ap, void *);
-	nbr = ft_ultoa_base((unsigned long) p, "0123456789abcdef");
+	nbr = ft_strjoin("0x", ft_ultoa_base((unsigned long) p, "0123456789abcdef"));
 	len = flags->precision - ft_strlen(nbr);
 	len = len < 0 ? 0 : len;
 	if (!(zero = ft_calloc(len + 1, sizeof(char))))
@@ -170,7 +170,6 @@ void	option_p(va_list *ap, t_flags *flags)
 	ft_memset(zero, '0', len);
 	zero[len] = 0;
 	s = ft_strjoin(zero, nbr);
-	ft_putstr_fd("0x", 1);
 	print_arg(s, flags);
 	flags->nprint += (ft_strlen(s) > (unsigned long) flags->len) ? ft_strlen(s) : flags->len;
 	free(nbr);
@@ -184,7 +183,7 @@ void	handle_flags(const char **s, t_flags *flags)
 	while (**s == '-' || **s == '0')
 	{
 		if (**s == '-')
-			flags->left_pad = !flags->left_pad;
+			flags->left_pad = (flags->left_pad == 0) ? 1 : 0;
 		else if (**s == '0')
 			flags->zero_pad = 1;
 		(*s)++;
@@ -207,7 +206,7 @@ void	handle_digits(va_list *ap, const char **s, t_flags *flags)
 	if (flags->len < 0)
 	{
 		flags->len = -flags->len;
-		flags->left_pad = !flags->left_pad;
+		flags->left_pad = 1;
 	}
 	
 	

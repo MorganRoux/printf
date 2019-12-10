@@ -5,9 +5,9 @@ int main(void)
 {
 	// printf("\n%d - %d\n--\n", ft_printf(), printf());
 
-/*	
+	
 	int i = 1123456789;
-	unsigned int u = 876876;
+/*	unsigned int u = 876876;
 	int j = 20;
 	int k = 15;
 	int l = -16;
@@ -42,7 +42,12 @@ int main(void)
 	printf("\n%d - %d\n--\n", ft_printf("%0XPMT2j%%%-19.0s!\n", -401468411, NULL), printf("%0XPMT2j%%%-19.0s!\n", -401468411, NULL));
 	printf("\n%d - %d\n--\n", ft_printf("ZVyBh%012.5X%*i%18x%-11cKgUrX\n", 2147483647, 8, -2147483647, 0, 'm'), printf("ZVyBh%012.5X%*i%18x%-11cKgUrX\n", 2147483647, 8, -2147483647, 0, 'm'));
 
-	printf("\n%d - %d\n--\n", ft_printf("%-c%xNP1JT1kfIVjqJ\n", '\0', -2147483647), printf("%-c%xNP1JT1kfIVjqJ\n", '\0', -2147483647));*/
+	printf("\n%d - %d\n--\n", ft_printf("%-c%xNP1JT1kfIVjqJ\n", '\0', -2147483647), printf("%-c%xNP1JT1kfIVjqJ\n", '\0', -2147483647));
 	printf("\n%d - %d\n--\n", ft_printf("b%-10u4Mbv%0*.0x%csP%015Xzu38%2ckuOaK\n", 2147483647, 7, -2147483647, '2', 2147483647, '\0'), printf("b%-10u4Mbv%0*.0x%csP%015Xzu38%2ckuOaK\n", 2147483647, 7, -2147483647, '2', 2147483647, '\0'));
+	printf("\n%d - %d\n--\n", ft_printf("%-*.*s-", -16, 6 , "Helloworld !"), printf("%-*.*s-", -16, 6, "Helloworld !"));
+	printf("\n%d - %d\n--\n", ft_printf("|%-27p|\n", &i), printf("|%-27p|\n", &i));*/
+	printf("\n%d - %d\n--\n", ft_printf("|%-.0d|\n", 0), printf("|%-.0d|\n", 0));
+
+
 	return (0);
 }
