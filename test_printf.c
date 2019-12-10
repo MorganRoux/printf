@@ -1,4 +1,4 @@
-#include "libft.h"
+#include "libftprintf.h"
 #include <stdio.h>
 
 int main(void)
@@ -46,7 +46,7 @@ int main(void)
 	printf("\n%d - %d\n--\n", ft_printf("b%-10u4Mbv%0*.0x%csP%015Xzu38%2ckuOaK\n", 2147483647, 7, -2147483647, '2', 2147483647, '\0'), printf("b%-10u4Mbv%0*.0x%csP%015Xzu38%2ckuOaK\n", 2147483647, 7, -2147483647, '2', 2147483647, '\0'));
 	printf("\n%d - %d\n--\n", ft_printf("%-*.*s-", -16, 6 , "Helloworld !"), printf("%-*.*s-", -16, 6, "Helloworld !"));
 	printf("\n%d - %d\n--\n", ft_printf("|%-27p|\n", &i), printf("|%-27p|\n", &i));*/
-	printf("\n%d - %d\n--\n", ft_printf("|%-.0d|\n", 0), printf("|%-.0d|\n", 0));
+	printf("\n%d - %d\n--\n", ft_printf("|%-.d|\n", 0), printf("|%-.d|\n", 0));
 
 
 	return (0);

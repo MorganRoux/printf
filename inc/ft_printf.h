@@ -6,13 +6,13 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:33 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/03 10:44:16 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/10 16:41:24 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include "libft.h"
+# include "libftprintf.h"
 # include <stdarg.h>
 # define RIGHT_ADJUSTED 0
 # define LEFT_ADJUSTED 1
