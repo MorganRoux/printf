@@ -1,6 +1,6 @@
 NAME		=	libftprintf.a
 
-LIBFT		=	libft.a
+LIBFT		=	libft/libft.a
 
 LIBFT_DIR	=	libft
 
@@ -21,14 +21,14 @@ FLAGS		=	-Wall -Wextra -Werror
 .c.o:			${SRCS} ${SRCS_BONUS}
 			${CC} ${FLAGS} ${INC_PATH} -c $<  -o ${<:.c=.o}
 
+all:			$(NAME)
+
 $(NAME):	$(LIBFT) ${OBJS}
 			ar rc ${NAME} ${OBJS}
 
-all:			$(NAME)
-
 $(LIBFT):	
-			make -C $(LIBFT_DIR)
-			cp $(LIBFT_DIR)/$(LIBFT) $(NAME)
+			make bonus -C $(LIBFT_DIR)
+			cp $(LIBFT) $(NAME)
 
 
 clean:		
