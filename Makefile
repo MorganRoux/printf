@@ -8,7 +8,8 @@ SRCS		=	src/ft_printf.c \
 			src/ft_printf_utils.c \
 			src/ft_printf_options_others.c \
 			src/ft_printf_options_diux.c \
-			src/ft_printf_prints.c
+			src/ft_printf_prints.c \
+			src/ft_strjoin_ex.c
 			
 OBJS		=	${SRCS:.c=.o}
 

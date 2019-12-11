@@ -6,7 +6,7 @@
 /*   By: mroux <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:58:33 by mroux             #+#    #+#             */
-/*   Updated: 2019/12/10 18:37:14 by mroux            ###   ########.fr       */
+/*   Updated: 2019/12/11 11:50:49 by mroux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void			option_p(va_list *ap, t_flags *flags);
 int				ft_printf(const char *s, ...);
 int				handle_args(va_list *ap, const char **s, t_flags *flags);
 char			is_flag(char c);
+char			*ft_strjoin_ex(char *s1, char *s2, char select);
 
 #endif
